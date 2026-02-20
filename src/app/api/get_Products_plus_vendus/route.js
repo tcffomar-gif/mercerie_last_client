@@ -17,7 +17,7 @@ export async function GET(request) {
 
 const arr_data = await ProductModal.find({disponible:"disponible"})
 .sort({ purchaseCount: -1 })
-.limit(15); // Limite à 10 produits les plus achetés
+.limit(15); // Limite à 15 produits les plus achetés
 
 
 

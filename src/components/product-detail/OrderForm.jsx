@@ -3,6 +3,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Package, Home, Store, Truck, Plus, Minus } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const OrderForm = ({
   isOpen,
@@ -22,6 +23,7 @@ const OrderForm = ({
   centers = [],
   isLoadingCenters,
 }) => {
+  const t = useTranslations("CartPage");
   return (
     <AnimatePresence>
       {isOpen && (
@@ -44,12 +46,12 @@ const OrderForm = ({
                 <div className="p-2 bg-[#FFF9E6] dark:bg-[#D4B814]/20 rounded-xl">
                   <Package className="w-5 h-5 text-[#D4B814]" />
                 </div>
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Passer la commande</h2>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t("orderForm")}</h2>
               </div>
               <button
                 onClick={onClose}
                 className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
-                aria-label="Fermer"
+                aria-label={t("close")}
               >
                 <X className="w-5 h-5 text-gray-500" />
               </button>
@@ -58,7 +60,7 @@ const OrderForm = ({
             <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-6 max-h-[75vh] overflow-y-auto">
               <div className="space-y-4">
                 <div className="space-y-3">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom complet *</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t("fullName")} *</label>
                   <input
                     name="fullName"
                     value={formData.fullName}
@@ -70,7 +72,7 @@ const OrderForm = ({
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="space-y-3">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Téléphone *</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t("phoneNumber")} *</label>
                     <input
                       name="phoneNumber"
                       type="tel"
@@ -81,7 +83,7 @@ const OrderForm = ({
                     />
                   </div>
                   <div className="space-y-3">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Confirmer *</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t("confirmPhoneNumber")} *</label>
                     <input
                       name="confirmedPhoneNumber"
                       type="tel"
@@ -94,7 +96,7 @@ const OrderForm = ({
                 </div>
 
                 <div className="space-y-3">
-                  <p className="block text-sm font-medium text-gray-700 dark:text-gray-300">Type de livraison *</p>
+                  <p className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t("deliveryType")} *</p>
                   <div className="grid grid-cols-2 gap-3">
                     <button
                       type="button"
@@ -106,7 +108,7 @@ const OrderForm = ({
                       }`}
                     >
                       <Store className={`w-6 h-6 ${formData.deliveryType === "relayPoint" ? "text-[#D4B814]" : "text-gray-500"}`} />
-                      <span className="text-sm font-semibold">Point relais</span>
+                      <span className="text-sm font-semibold">{t("relayPoint")}</span>
                     </button>
                     <button
                       type="button"
@@ -118,13 +120,13 @@ const OrderForm = ({
                       }`}
                     >
                       <Home className={`w-6 h-6 ${formData.deliveryType === "homeDelivery" ? "text-[#D4B814]" : "text-gray-500"}`} />
-                      <span className="text-sm font-semibold">À domicile</span>
+                      <span className="text-sm font-semibold">{t("homeDelivery")}</span>
                     </button>
                   </div>
                 </div>
 
                 <div className="space-y-3">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Wilaya *</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t("wilaya")} *</label>
                   <select
                     name="wilaya"
                     value={formData.wilaya}
@@ -132,7 +134,7 @@ const OrderForm = ({
                     className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 focus:ring-2 focus:ring-[#D4B814] focus:outline-none"
                     required
                   >
-                    <option value="">Sélectionnez une wilaya</option>
+                    <option value="">{t("selectWilaya")}</option>
                     {wilayasWithPrices.map((wilaya) => (
                       <option key={wilaya.name_sans_Nm} value={wilaya.name_sans_Nm}>
                         {wilaya.name}
@@ -143,7 +145,7 @@ const OrderForm = ({
 
                 {formData.deliveryType === "relayPoint" && (
                   <div className="space-y-3">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Point relais *</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t("selectRelayPoint")} *</label>
                     <select
                       name="relayPoint"
                       value={formData.relayPoint?.center_id || ""}
@@ -152,9 +154,9 @@ const OrderForm = ({
                       disabled={isLoadingCenters}
                       required
                     >
-                      <option value="">Choisir un point relais</option>
+                      <option value="">{t("chooseRelayPoint")}</option>
                       {isLoadingCenters ? (
-                        <option value="">Chargement...</option>
+                        <option value="">{t("loading")}</option>
                       ) : Array.isArray(centers) && centers.length > 0 ? (
                         centers.map((center) => (
                           <option key={center.center_id} value={center.center_id}>
@@ -162,7 +164,7 @@ const OrderForm = ({
                           </option>
                         ))
                       ) : (
-                        <option value="">Aucun centre disponible</option>
+                        <option value="">{t("noCentersAvailable")}</option>
                       )}
                     </select>
                   </div>
@@ -171,7 +173,7 @@ const OrderForm = ({
                 {formData.deliveryType === "homeDelivery" && (
                   <>
                     <div className="space-y-3">
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Commune *</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t("commune")} *</label>
                       <select
                         name="commune"
                         value={formData.commune}
@@ -179,7 +181,7 @@ const OrderForm = ({
                         className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 focus:ring-2 focus:ring-[#D4B814] focus:outline-none"
                         required
                       >
-                        <option value="">Sélectionnez une commune</option>
+                        <option value="">{t("selectCommune")}</option>
                         {communes.map((commune) => (
                           <option key={commune.name} value={commune.name}>
                             {commune.name}
@@ -188,13 +190,13 @@ const OrderForm = ({
                       </select>
                     </div>
                     <div className="space-y-3">
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Adresse complète *</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t("address")} *</label>
                       <input
                         name="address"
                         value={formData.address}
                         onChange={onInputChange}
                         className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 focus:ring-2 focus:ring-[#D4B814] focus:outline-none"
-                        placeholder="Numéro, rue, quartier..."
+                        placeholder={t("addressPlaceholder")}
                         required
                       />
                     </div>
@@ -204,12 +206,12 @@ const OrderForm = ({
 
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Quantité</p>
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{t("quantity")}</p>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => onQuantityChange(Math.max(1, quantity - 1))}
                       className="p-2 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800"
-                      aria-label="Diminuer"
+                      aria-label={t("decrease")}
                     >
                       <Minus className="w-4 h-4" />
                     </button>
@@ -219,7 +221,7 @@ const OrderForm = ({
                     <button
                       onClick={() => onQuantityChange(quantity + 1)}
                       className="p-2 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800"
-                      aria-label="Augmenter"
+                      aria-label={t("increase")}
                     >
                       <Plus className="w-4 h-4" />
                     </button>
@@ -228,19 +230,19 @@ const OrderForm = ({
 
                 <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/40 p-4 space-y-3">
                   <h3 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                    <Truck className="w-4 h-4 text-amber-600" /> Récapitulatif
+                    <Truck className="w-4 h-4 text-amber-600" /> {t("orderSummary")}
                   </h3>
                   <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                     <div className="flex justify-between">
-                      <span>Sous-total ({quantity} article{quantity > 1 ? "s" : ""})</span>
+                      <span>{t("subtotal")} ({t("itemsCount", { count: quantity })})</span>
                       <span className="font-semibold">{subtotal.toLocaleString()} DZD</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Livraison</span>
+                      <span>{t("deliveryFees")}</span>
                       <span className="font-semibold">{deliveryFees ? `${deliveryFees.toLocaleString()} DZD` : "—"}</span>
                     </div>
                     <div className="border-t border-gray-200 dark:border-gray-700 pt-2 flex justify-between text-base font-bold text-gray-900 dark:text-white">
-                      <span>Total</span>
+                      <span>{t("total")}</span>
                       <span className="text-amber-600">{total.toLocaleString()} DZD</span>
                     </div>
                   </div>
@@ -251,7 +253,7 @@ const OrderForm = ({
                   disabled={isLoading}
                   className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-semibold py-3 rounded-xl shadow hover:shadow-lg transition disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {isLoading ? "Traitement..." : "Confirmer la commande"}
+                  {isLoading ? t("processing") : t("placeOrder")}
                 </button>
               </div>
             </div>

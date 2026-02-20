@@ -80,7 +80,7 @@ const ProductDetail = ({ product, price_min }) => {
       .filter((variant) => !selectedVariants[variant.type.fr])
       .map((variant) => variant.type[locale] || variant.type.fr);
     if (product.variant_color?.length && !selectedColorImage) {
-      missing.push("Modèle");
+      missing.push(t("model"));
     }
     return missing;
   }, [product, selectedVariants, selectedColorImage, locale]);
@@ -171,7 +171,7 @@ const ProductDetail = ({ product, price_min }) => {
     return uniqueId;
   };
 
-  const getTotalQuantityInCart = async (id_user) => {
+  const getCartItems = async (id_user) => {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_MY_URL}/api/get_cart_client`, {
         method: "POST",
@@ -181,14 +181,24 @@ const ProductDetail = ({ product, price_min }) => {
 
       if (!res.ok) throw new Error("Failed to fetch cart");
 
-      const cartData = await res.json();
-      return cartData
-        .filter((item) => item.id_product._id === product._id)
-        .reduce((sum, item) => sum + item.quantite, 0);
+      return await res.json();
     } catch (err) {
       console.error("Error fetching cart:", err);
-      return 0;
+      return [];
     }
+  };
+
+  const getTotalQuantityInCart = (cartItems) =>
+    cartItems
+      .filter((item) => item.id_product._id === product._id)
+      .reduce((sum, item) => sum + item.quantite, 0);
+
+  const normalizeCaracteristique = (caracteristique) => {
+    if (!caracteristique) return "";
+    return Object.keys(caracteristique)
+      .sort()
+      .map((key) => `${key}:${caracteristique[key]}`)
+      .join("|");
   };
 
   const handleAddToCart = useCallback(
@@ -210,7 +220,8 @@ const ProductDetail = ({ product, price_min }) => {
         totalPriceAdjustment += selectedColorImage?.priceAdjustment || 0;
 
         const finalUnitPrice = product.price + totalPriceAdjustment;
-        const totalQuantityInCart = await getTotalQuantityInCart(id_user);
+        const cartItems = await getCartItems(id_user);
+        const totalQuantityInCart = getTotalQuantityInCart(cartItems);
         const totalQuantity = totalQuantityInCart + quantity;
         const discountedPrice = calculateTotalPrice(product.reduction, totalQuantity, finalUnitPrice);
 
@@ -231,15 +242,36 @@ const ProductDetail = ({ product, price_min }) => {
           },
         };
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_MY_URL}/api/addProduct_in_cart_client`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(cartItem),
+        const caracteristiqueKey = normalizeCaracteristique(caracteristique);
+        const selectedColorType = selectedColorImage?.type || "";
+        const selectedColorImg = selectedColorImage?.img?.secure_url || "";
+        const matchingItem = cartItems.find((item) => {
+          if (item.id_product._id !== product._id) return false;
+          const itemCaracteristiqueKey = normalizeCaracteristique(item.caracteristique);
+          if (itemCaracteristiqueKey !== caracteristiqueKey) return false;
+          const itemColorType = item.caracteristique_couleur?.type || "";
+          const itemColorImg = item.caracteristique_couleur?.img || "";
+          return itemColorType === selectedColorType && itemColorImg === selectedColorImg;
         });
+
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_MY_URL}/${matchingItem ? "api/update_cart_quantite" : "api/addProduct_in_cart_client"}`,
+          {
+            method: matchingItem ? "PUT" : "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(
+              matchingItem
+                ? { _id: matchingItem._id, quantite: matchingItem.quantite + quantity }
+                : cartItem
+            ),
+          }
+        );
 
         if (!res.ok) throw new Error("Failed to add product to cart");
 
-        incrementCartCount(1);
+        if (!matchingItem) {
+          incrementCartCount(1);
+        }
         toast.success(t("productAddedToCart"));
         setSubtotal(discountedPrice);
         setTotal(discountedPrice + deliveryFees);

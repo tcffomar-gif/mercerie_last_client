@@ -2,8 +2,10 @@
 
 import React from "react";
 import { Minus, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const QuantitySelector = ({ quantity, onChange, min = 1, max = 99 }) => {
+  const t = useTranslations("ProductDetail");
   const decrease = () => {
     if (quantity > min) onChange(quantity - 1);
   };
@@ -13,13 +15,13 @@ const QuantitySelector = ({ quantity, onChange, min = 1, max = 99 }) => {
 
   return (
     <div className="flex items-center gap-3">
-      <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Quantité</span>
+      <span className="text-sm font-medium text-gray-700 dark:text-gray-200">{t("quantity")}</span>
       <div className="flex items-center rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden bg-white dark:bg-gray-800">
         <button
           onClick={decrease}
           disabled={quantity <= min}
           className="p-3 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700"
-          aria-label="Diminuer la quantité"
+          aria-label={t("decreaseQuantity")}
         >
           <Minus className="w-4 h-4" />
         </button>
@@ -39,7 +41,7 @@ const QuantitySelector = ({ quantity, onChange, min = 1, max = 99 }) => {
           onClick={increase}
           disabled={quantity >= max}
           className="p-3 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700"
-          aria-label="Augmenter la quantité"
+          aria-label={t("increaseQuantity")}
         >
           <Plus className="w-4 h-4" />
         </button>

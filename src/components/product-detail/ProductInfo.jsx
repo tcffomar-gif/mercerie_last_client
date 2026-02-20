@@ -3,8 +3,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Shield, Tag, Truck, Package } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const ProductInfo = ({ product, currentPrice, locale = "fr" }) => {
+  const t = useTranslations("ProductDetail");
   const discountPercentage = product.ancien_price && product.ancien_price > product.price
     ? Math.round(((product.ancien_price - product.price) / product.ancien_price) * 100)
     : 0;
@@ -24,7 +26,7 @@ const ProductInfo = ({ product, currentPrice, locale = "fr" }) => {
         </h1>
         {product.comments && product.comments.length > 0 && (
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            {product.comments.length} avis clients
+            {t("reviewsCount", { count: product.comments.length })}
           </p>
         )}
       </motion.div>
@@ -39,7 +41,7 @@ const ProductInfo = ({ product, currentPrice, locale = "fr" }) => {
           <span className="text-3xl md:text-4xl font-bold text-[#D4B814]">
             {currentPrice.toLocaleString()} DZD
           </span>
-          {product.ancien_price && product.ancien_price > product.price && (
+          {product.ancien_price  && product.ancien_price > product.price && (
             <>
               <span className="text-lg line-through text-gray-500 dark:text-gray-400">
                 {product.ancien_price.toLocaleString()} DZD
@@ -52,7 +54,7 @@ const ProductInfo = ({ product, currentPrice, locale = "fr" }) => {
         </div>
         {discountPercentage > 0 && (
           <p className="text-sm text-green-600 dark:text-green-400">
-            Vous économisez {(product.ancien_price - product.price).toLocaleString()} DZD
+            {t("youSave", { amount: (product.ancien_price - product.price).toLocaleString() })}
           </p>
         )}
       </motion.div>
@@ -75,16 +77,20 @@ const ProductInfo = ({ product, currentPrice, locale = "fr" }) => {
         >
           <div className="flex items-center gap-2 text-[#D4B814] dark:text-[#EDD658]">
             <Tag className="w-5 h-5" />
-            <h3 className="font-semibold">Offres spéciales</h3>
+            <h3 className="font-semibold">{t("specialOffers")}</h3>
           </div>
           <ul className="space-y-2 text-sm text-gray-800 dark:text-gray-200">
             {product.reduction.map((reduction, index) => (
               <li key={`${reduction.quantite}-${index}`} className="flex items-start gap-2">
                 <span className="mt-1 h-2 w-2 rounded-full bg-[#D4B814]" />
                 <span>
-                  Achetez <strong>{reduction.quantite}</strong> unités et économisez
-                  {" "}
-                  <strong className="text-red-600 dark:text-red-400">{reduction.reduction.toLocaleString()} DZD</strong>
+                  {t.rich("buyXSave", {
+                    qty: reduction.quantite,
+                    amount: reduction.reduction.toLocaleString(),
+                    strong: (chunks) => (
+                      <strong className="text-red-600 dark:text-red-400">{chunks}</strong>
+                    ),
+                  })}
                 </span>
               </li>
             ))}

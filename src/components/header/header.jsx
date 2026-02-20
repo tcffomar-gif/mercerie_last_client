@@ -327,6 +327,9 @@ const Header = () => {
                       ))}
                     </select>
                   </div>
+                  <div className="bg-transparent w-2">
+
+                  </div>
 
                   {/* Search Button */}
                   <button

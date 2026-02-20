@@ -122,14 +122,14 @@ const RelatedProducts = ({ productId, currentProductCategory }) => {
             <button
               onClick={prevSlide}
               className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white dark:bg-gray-700 p-3 rounded-full shadow-lg hover:scale-110 transition-transform"
-              aria-label="Previous products"
+              aria-label={t("previousProducts")}
             >
               <ChevronLeft className="w-6 h-6 text-gray-800 dark:text-white" />
             </button>
             <button
               onClick={nextSlide}
               className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white dark:bg-gray-700 p-3 rounded-full shadow-lg hover:scale-110 transition-transform"
-              aria-label="Next products"
+              aria-label={t("nextProducts")}
             >
               <ChevronRight className="w-6 h-6 text-gray-800 dark:text-white" />
             </button>

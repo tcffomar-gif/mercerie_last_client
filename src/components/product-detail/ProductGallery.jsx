@@ -3,11 +3,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, ZoomIn, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const fallbackImg = "/images/gg1.webp";
 
 const ProductGallery = ({ images = [], productTitle = "" }) => {
+  const t = useTranslations("ProductDetail");
   const safeImages = useMemo(
     () => (images.length ? images : [{ secure_url: fallbackImg }]),
     [images]
@@ -60,14 +62,14 @@ const ProductGallery = ({ images = [], productTitle = "" }) => {
                 <button
                   onClick={handlePrev}
                   className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-900/80 text-gray-900 dark:text-white rounded-full p-1.5 sm:p-2 shadow hover:scale-105 transition"
-                  aria-label="Image précédente"
+                  aria-label={t("prevImage")}
                 >
                   <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
                 <button
                   onClick={handleNext}
                   className="absolute  right-2 sm:right-3 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-900/80 text-gray-900 dark:text-white rounded-full p-1.5 sm:p-2 shadow hover:scale-105 transition"
-                  aria-label="Image suivante"
+                  aria-label={t("nextImage")}
                 >
                   <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
@@ -95,7 +97,7 @@ const ProductGallery = ({ images = [], productTitle = "" }) => {
                 <div className="h-16 w-16 sm:h-20 sm:w-20 relative overflow-hidden rounded-md bg-gray-50 dark:bg-gray-900">
                   <Image
                     src={img.secure_url || fallbackImg}
-                    alt={`Miniature ${idx + 1}`}
+                    alt={t("thumbnailAlt", { index: idx + 1 })}
                     fill
                     sizes="80px"
                     className="object-cover"
@@ -119,7 +121,7 @@ const ProductGallery = ({ images = [], productTitle = "" }) => {
             <button
               onClick={() => setIsZoomed(false)}
               className="absolute top-6 right-6 bg-white/10 text-white p-3 rounded-full hover:bg-white/20"
-              aria-label="Fermer"
+              aria-label={t("close")}
             >
               <X className="w-6 h-6" />
             </button>
@@ -131,7 +133,7 @@ const ProductGallery = ({ images = [], productTitle = "" }) => {
             >
               <Image
                 src={currentImage}
-                alt={productTitle}
+                alt={t("zoomAlt")}
                 width={1200}
                 height={1200}
                 className="object-contain w-full h-full"

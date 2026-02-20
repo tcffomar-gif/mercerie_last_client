@@ -48,7 +48,10 @@ const nextConfig = {
         NEXT_PUBLIC_MY_URL: process.env.NEXT_PUBLIC_MY_URL,
       },
       images: {
-        // unoptimized: true, // Disables all image optimizations globally
+        // Disable Next.js built-in image optimization to avoid Vercel image
+        // transformation quota usage. We use external CDN / transformed URLs
+        // (Cloudinary, etc.) and/or plain <img> for delivery.
+        unoptimized: true,
         remotePatterns: [
           {
             protocol: 'https',

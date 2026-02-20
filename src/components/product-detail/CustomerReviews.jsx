@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, MessageCircle, Star } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 const CustomerReviews = ({
   comments = [],
@@ -16,6 +17,8 @@ const CustomerReviews = ({
   onSubmit,
   isSubmitting,
 }) => {
+  const t = useTranslations("ProductDetail");
+  const locale = useLocale();
   const [expanded, setExpanded] = useState(true);
   const [visibleCount, setVisibleCount] = useState(3);
 
@@ -38,7 +41,9 @@ const CustomerReviews = ({
             <MessageCircle className="w-6 h-6 text-[#D4B814]" />
           </div>
           <div>
-            <p className="text-lg font-semibold text-gray-900 dark:text-white">Avis clients</p>
+            <p className="text-lg font-semibold text-gray-900 dark:text-white">
+              {t("customerReviews")}
+            </p>
             <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-300">
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
@@ -49,7 +54,7 @@ const CustomerReviews = ({
                 ))}
               </div>
               <span>
-                {averageRating.toFixed(1)} ({comments.length} avis)
+                {averageRating.toFixed(1)} ({t("reviewsCount", { count: comments.length })})
               </span>
             </div>
           </div>
@@ -69,8 +74,8 @@ const CustomerReviews = ({
           >
             {comments.length === 0 ? (
               <div className="text-center py-8 text-gray-500 dark:text-gray-300">
-                <p>Aucun avis pour "{productTitle}" pour le moment.</p>
-                <p className="text-sm mt-1">Soyez le premier à laisser un avis !</p>
+                <p>{t("noReviewsTitle", { product: productTitle })}</p>
+                <p className="text-sm mt-1">{t("noReviewsSubtitle")}</p>
               </div>
             ) : (
               <div className="space-y-4 mb-6">
@@ -88,7 +93,7 @@ const CustomerReviews = ({
                           <p className="font-semibold text-gray-900 dark:text-white">{comment.name}</p>
                           {comment.createdAt && (
                             <p className="text-xs text-gray-500 dark:text-gray-400">
-                              {new Date(comment.createdAt).toLocaleDateString("fr-FR", {
+                              {new Date(comment.createdAt).toLocaleDateString(locale, {
                                 year: "numeric",
                                 month: "long",
                                 day: "numeric",
@@ -117,17 +122,21 @@ const CustomerReviews = ({
                     onClick={() => setVisibleCount((v) => Math.min(v + 3, comments.length))}
                     className="w-full py-2 text-amber-600 font-medium hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-lg"
                   >
-                    Voir plus d'avis
+                    {t("viewMoreReviews")}
                   </button>
                 )}
               </div>
             )}
 
             <form onSubmit={onSubmit} className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Laisser un avis</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                {t("leaveReview")}
+              </h3>
 
               <div>
-                <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">Votre note *</p>
+                <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                  {t("yourRating")} *
+                </p>
                 <div className="flex gap-1">
                   {[...Array(5)].map((_, i) => (
                     <button
@@ -144,7 +153,7 @@ const CustomerReviews = ({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Votre avis *
+                  {t("yourReview")} *
                 </label>
                 <textarea
                   name="review"
@@ -152,14 +161,16 @@ const CustomerReviews = ({
                   onChange={onFieldChange}
                   rows={4}
                   className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-3 focus:ring-2 focus:ring-amber-500 focus:outline-none"
-                  placeholder="Partagez votre expérience"
+                  placeholder={t("shareExperience")}
                   required
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nom *</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    {t("name")} *
+                  </label>
                   <input
                     name="name"
                     value={name}
@@ -169,7 +180,9 @@ const CustomerReviews = ({
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email *</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    {t("email")} *
+                  </label>
                   <input
                     name="email"
                     type="email"
@@ -186,7 +199,7 @@ const CustomerReviews = ({
                 disabled={isSubmitting}
                 className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-semibold py-3 rounded-xl shadow hover:shadow-lg transition disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? "Envoi..." : "Publier l'avis"}
+                {isSubmitting ? t("sending") : t("submitReview")}
               </button>
             </form>
           </motion.div>

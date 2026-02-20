@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const VariantSelector = ({
   product,
@@ -13,6 +14,7 @@ const VariantSelector = ({
   onColorSelect,
   locale = "fr",
 }) => {
+  const t = useTranslations("ProductDetail");
   const [zoomedImage, setZoomedImage] = useState(null);
 
   return (
@@ -21,7 +23,7 @@ const VariantSelector = ({
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <h3 className="text-base font-semibold text-gray-900 dark:text-white">
-              Modèle
+              {t("model")}
             </h3>
             {selectedColorImage?.type && (
               <span className="text-sm text-[#D4B814] font-medium">
@@ -161,7 +163,7 @@ const VariantSelector = ({
             <button
               onClick={() => setZoomedImage(null)}
               className="absolute top-6 right-6 bg-white/10 text-white p-3 rounded-full hover:bg-white/20 z-10"
-              aria-label="Fermer"
+              aria-label={t("close")}
             >
               <X className="w-6 h-6" />
             </button>
@@ -174,7 +176,7 @@ const VariantSelector = ({
             >
               <Image
                 src={zoomedImage}
-                alt="Zoom"
+                alt={t("zoomAlt")}
                 width={1200}
                 height={1200}
                 className="object-contain w-full h-full"

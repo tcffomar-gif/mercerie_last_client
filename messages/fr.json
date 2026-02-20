@@ -40,7 +40,7 @@
     "ToutesSousCategories": "Toutes les sous-catégories",
     "AutresCatégories": "Autres Catégories",
     "Découvreznotresélectionpremium": "Découvrez notre sélection premium",
-    "voirCategories": "Voir les catégories",
+    "voirCategories": "Voir les catégories !",
     "found": "trouvé(s)"
   },
   "Header": {
@@ -126,6 +126,21 @@
     "thankYouForReview": "Merci pour votre avis !",
     "hideReviews": "Masquer les avis",
     "showReviews": "Afficher les avis",
+    "prevImage": "Image précédente",
+    "nextImage": "Image suivante",
+    "thumbnailAlt": "Miniature {index}",
+    "zoomAlt": "Zoom de l'image",
+    "reviewsCount": "{count, plural, one {# avis client} other {# avis clients}}",
+    "youSave": "Vous économisez {amount} DZD",
+    "specialOffers": "Offres spéciales",
+    "buyXSave": "Achetez <strong>{qty}</strong> unités et économisez <strong>{amount} DZD</strong>",
+    "decreaseQuantity": "Diminuer la quantité",
+    "increaseQuantity": "Augmenter la quantité",
+    "buyNowWithPrice": "Acheter maintenant • {price} DZD",
+    "noReviewsTitle": "Aucun avis pour \"{product}\" pour le moment.",
+    "noReviewsSubtitle": "Soyez le premier à laisser un avis !",
+    "viewMoreReviews": "Voir plus d'avis",
+    "sending": "Envoi...",
     "model": "Modèle",
     "achetemaintenant": "Acheter Maintenant",
     "close": "Fermer",
@@ -186,6 +201,7 @@
     "subtotal": "Sous-total",
     "deliveryFees": "Frais de livraison",
     "total": "Total",
+    "itemsCount": "{count, plural, one {# article} other {# articles}}",
     "loading": "Chargement",
     "sendOrder": "ENVOYER LA COMMANDE",
     "loginToPlaceOrder": "Veuillez vous connecter pour passer une commande.",
@@ -204,6 +220,10 @@
     "processing": "Traitement...",
     "fillAddressFields": "Veuillez compléter votre adresse",
     "quantity": "Quantité",
+    "decrease": "Diminuer",
+    "increase": "Augmenter",
+    "addressPlaceholder": "Numéro, rue, quartier...",
+    "noCentersAvailable": "Aucun centre disponible",
     "Prixdebase": "Prix de base",
     "Ajustements": "Ajustements",
     "Prixapresajustements": "Prix après ajustements",
@@ -414,6 +434,8 @@
   },
   "relatedProducts": {
     "relatedProducts": "Produits similaires",
-    "viewDetails": "Voir détails"
+    "viewDetails": "Voir détails",
+    "previousProducts": "Produits précédents",
+    "nextProducts": "Produits suivants"
   }
 }
