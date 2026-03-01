@@ -47,9 +47,11 @@ export const category = [
       { name_search: "inox-fermoirs", name: "Les fermoir", name_ar: "المشابك" },
       { name_search: "inox-chaines", name: "Les chaine", name_ar: "السلاسل" },
       { name_search: "inox-motifs-separation", name: "Motifs et separation", name_ar: "الزخارف والفواصل" },
-      { name_search: "inox-autres", name: "Autres choses", name_ar: "أشياء أخرى" }
+      { name_search: "inox-autres", name: "Autres choses", name_ar: "أشياء أخرى" },
+      { name_search: "Acier_en_Argent", name: "Acier en Argent", name_ar: "الفولاذ الفضي" }
     ]
   },
+
   {
     name_search: "Accessoires",
     name: "Accessoires",
